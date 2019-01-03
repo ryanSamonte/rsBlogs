@@ -5,11 +5,12 @@
 		<div class="row">
 			<div class="col-md-8">
 				<div class="card w-100" style="min-height: 550px;">
+				<img src="{{URL::asset('img_upload/'.$blog->bannerFile)}}" class="card-img-top" alt="...">
 				  <div class="card-body">
 					<h5 class="card-title" style="font-size: 40px;">{{$blog->blogTitle}}</h5>
 					<h6 style="font-size:12px;">14 December, 2018&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:10px;">28 mins ago</span></h6>
 					<br>
-                    <p class="card-text" style="font-size:17px;">{{$blog->blogContent}}</p>
+                    <p class="card-text" style="font-size:15px; text-align:justify; font-family: 'Arial'">{!! nl2br(e($blog->blogContent)) !!}</p>
 				  </div>
 				</div>
 			</div>

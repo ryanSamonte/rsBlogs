@@ -35,7 +35,64 @@
 	</div>
 <br>
 	<div class="container">
-		<div class="row">
+	@if($blogsCount == 0)
+	<div class="row">
+		<div class="col text-center">
+			<h1>No posts yet.</h1>
+		</div>
+	</div>
+	@endif
+
+	@if($blogsCount == 1)
+	<div class="row">
+			@foreach($otherBlogs as $otherBlogsValue)
+				<div class="col-md-12">
+					<div class="card w-100">
+				  	<div class="card-body">
+							<h5 class="card-title"><a href="/view/blog?id={{$otherBlogsValue->id}}">{{$otherBlogsValue->blogTitle}}</a></h5>
+							<h6 style="font-size:12px;">{{$otherBlogsValue->created_at}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:10px;">28 mins ago</span></h6>
+							<p class="card-text" style="font-size:12px;">With supporting text below as a natural lead-in to additional content.</p>
+				  	</div>
+					</div>
+				</div>
+    	@endforeach
+	</div>
+	@endif
+
+	@if($blogsCount == 2)
+	<div class="row">
+			@foreach($otherBlogs as $otherBlogsValue)
+				<div class="col-md-6">
+					<div class="card w-100">
+				  	<div class="card-body">
+							<h5 class="card-title"><a href="/view/blog?id={{$otherBlogsValue->id}}">{{$otherBlogsValue->blogTitle}}</a></h5>
+							<h6 style="font-size:12px;">{{$otherBlogsValue->created_at}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:10px;">28 mins ago</span></h6>
+							<p class="card-text" style="font-size:12px;">With supporting text below as a natural lead-in to additional content.</p>
+				  	</div>
+					</div>
+				</div>
+    	@endforeach
+	</div>
+	@endif
+
+	@if($blogsCount == 3)
+	<div class="row">
+			@foreach($otherBlogs as $otherBlogsValue)
+				<div class="col-md-4">
+					<div class="card w-100">
+				  	<div class="card-body">
+							<h5 class="card-title"><a href="/view/blog?id={{$otherBlogsValue->id}}">{{$otherBlogsValue->blogTitle}}</a></h5>
+							<h6 style="font-size:12px;">{{$otherBlogsValue->created_at}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:10px;">28 mins ago</span></h6>
+							<p class="card-text" style="font-size:12px;">With supporting text below as a natural lead-in to additional content.</p>
+				  	</div>
+					</div>
+				</div>
+    	@endforeach
+	</div>
+	@endif
+
+	@if($blogsCount >= 4)
+	<div class="row">
 			@foreach($otherBlogs as $otherBlogsValue)
 				<div class="col-md-3">
 					<div class="card w-100">
@@ -47,7 +104,8 @@
 					</div>
 				</div>
     	@endforeach
-		</div>
+	</div>
+	@endif
 	</div>
 	
 	

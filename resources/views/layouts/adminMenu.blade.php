@@ -64,7 +64,7 @@
 			</li>
 
 			<li {{{ (Request::is("admin/manage/author") ? "class=active" : "") }}}>
-				<a class="nav-link" href="{{route('admin.manage.blog')}}">Manage Author</a>
+				<a class="nav-link" href="{{route('admin.manage.author')}}">Manage Author</a>
 			</li>
 		</ul>
 		<form class="form-inline my-2 my-lg-0">

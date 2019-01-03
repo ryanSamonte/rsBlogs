@@ -11,6 +11,7 @@ class Blog extends Model
         'categoryId',
         'blogContent',
         'authorId',
+        'bannerFile',
     ];
 
     public function categoryRelation(){

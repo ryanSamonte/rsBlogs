@@ -24,7 +24,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title" style="font-family: Trebuchet MS;font-size: 45px;">0</h5>
+                        <h5 class="card-title" style="font-family: Trebuchet MS;font-size: 45px;">{{$authorCount}}</h5>
                         <p class="card-text" style="font-family: Trebuchet MS;font-size: 25px;">AUTHOR</p>
                     </div>
                 </div>

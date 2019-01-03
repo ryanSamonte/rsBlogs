@@ -2,7 +2,7 @@
 //USER
 Route::get('/', [
     'uses'=>'UserController@index',
-    'as'=>'user.index'
+    'as'=>'home'
 ]);
 
 Route::get('/view/blog', [
@@ -48,3 +48,21 @@ Route::get('/admin/manage/category/retrieveAll', [
     'uses'=> 'AdminController@retrieveCategoryList',
     'as'=>'admin.manage.category.retrieve'
 ]);
+
+//AUTHOR
+Route::get('/admin/manage/author', [
+    'uses'=>'AdminController@manageAuthor',
+    'as'=>'admin.manage.author'
+]);
+
+Route::post('/admin/manage/author/save', [
+    'uses'=> 'AdminController@saveAuthor',
+    'as'=>'admin.manage.author.save'
+]);
+
+Route::get('/admin/manage/author/retrieveAll', [
+    'uses'=> 'AdminController@retrieveAuthorList',
+    'as'=>'admin.manage.author.retrieve'
+]);
+
+Auth::routes();

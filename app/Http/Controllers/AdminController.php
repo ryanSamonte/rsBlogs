@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Blog;
+use App\User;
+use Illuminate\Support\Facades\Input;
 
 class AdminController extends Controller
 {
@@ -13,7 +15,9 @@ class AdminController extends Controller
         
         $categoryCount = Category::all()->count();
 
-        return view('admin.index', compact("blogCount", "categoryCount"));
+        $authorCount = User::all()->count();
+
+        return view('admin.index', compact("blogCount", "categoryCount", "authorCount"));
     }
 
     //BLOGS
@@ -25,11 +29,11 @@ class AdminController extends Controller
 
     public function saveBlogs(Request $request){
         $blogInput = $request->all();
+
         $blogInput['authorId'] = 1;
-
+        $blogInput['bannerFile'] = "temp.jpg";
+        
         Blog::create($blogInput);
-
-        return dd($blogInput);
     }
 
     public function retrieveBlogList(){
@@ -57,5 +61,25 @@ class AdminController extends Controller
         $categoryList = Category::all();
 
         return response()->json($categoryList);
+    }
+
+    //CATEGORY
+    public function manageAuthor(){
+        return view('admin.manage.author.index');
+    }
+
+    public function saveAuthor(Request $request){
+        $authorInput = $request->all();
+        $authorInput['password'] = bcrypt($request['password']);
+
+        User::create($authorInput);
+
+        return dd($authorInput);
+    }
+
+    public function retrieveAuthorList(){
+        $authorList = User::all();
+
+        return response()->json($authorList);
     }
 }

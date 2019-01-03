@@ -14,7 +14,10 @@ class UserController extends Controller
         ->limit(4)
         ->get();
 
-        return view("welcome", compact("otherBlogs"));
+        $blogsCount = DB::table('blogs')
+        ->count();
+
+        return view("welcome", compact("otherBlogs", "blogsCount"));
     }
 
     public function viewBlog(Request $request){

@@ -41,7 +41,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/admin/manage/blog/save" method="post" id="newBlogForm">
+                    <form action="/admin/manage/blog/save" method="post" id="newBlogForm" enctype="multipart/form-data">
                     {{csrf_field()}}
                         <div class="container">
                             <div class="row">
@@ -71,6 +71,15 @@
                                     <div class="form-group">
                                         <label for="blogContent">Content</label>
                                         <textarea name="blogContent" id="blogContent" cols="30" rows="10" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="bannerFile">Banner</label>
+                                        <input type="file" name="bannerFile" class="form-control" id="bannerFile" required/>
                                     </div>
                                 </div>
                             </div>
