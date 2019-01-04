@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Blog;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
 class AdminController extends Controller
@@ -28,16 +29,31 @@ class AdminController extends Controller
     }
 
     public function saveBlogs(Request $request){
+        $validatedData = $request->validate([
+            "bannerFile" => "dimensions:max_width=728,max_height=400",
+        ]); 
+
         $blogInput = $request->all();
 
-        $blogInput['authorId'] = 1;
-        $blogInput['bannerFile'] = "temp.jpg";
+        if(Input::hasFile('bannerFile')){
+            $image = Input::file('bannerFile');
+            $blogInput['bannerFile'] = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('img_upload');
+            $image->move($destinationPath, $blogInput['bannerFile']);
+            
+            $blogInput['authorId'] = Auth::user()->id;
         
-        Blog::create($blogInput);
+            Blog::create($blogInput);
+        }
+        else{
+            $blogInput['authorId'] = Auth::user()->id;
+        
+            Blog::create($blogInput);
+        }
     }
 
     public function retrieveBlogList(){
-        $blogList = Blog::with('categoryRelation')->get();
+        $blogList = Blog::with('categoryRelation')->with('authorRelation')->get();
 
         return response()->json($blogList);
     }
@@ -63,7 +79,7 @@ class AdminController extends Controller
         return response()->json($categoryList);
     }
 
-    //CATEGORY
+    //AUTHOR
     public function manageAuthor(){
         return view('admin.manage.author.index');
     }

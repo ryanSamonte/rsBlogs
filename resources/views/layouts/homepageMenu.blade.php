@@ -4,6 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{ config('app.name', 'Laravel') }}</title>
 	
+	<link rel="icon" href="{{URL::asset('img/favicon.JPG')}}">
 	<link href="{{URL::asset('css/app.css')}}" rel="stylesheet">
 	<!-- <script src="{{URL::asset('plugins/datatable/datatables.min.css')}}"></script> -->
     <script src="{{URL::asset('plugins/jquery/dist/jquery.min.js')}}"></script>
@@ -53,7 +54,7 @@
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
-				<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="#">View All</a>
@@ -79,6 +80,20 @@
 					<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
 						{{ Auth::user()->name }} <span class="caret"></span>
 					</a>
+					@if(Auth::user()->role_id == 1)
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="{{ route('logout') }}"
+							onclick="event.preventDefault();
+											document.getElementById('logout-form').submit();">
+							{{ __('Logout') }}
+						</a>
+						<a class="dropdown-item" href="{{ route('admin.index') }}">Go to dashboard</a>
+
+						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+							@csrf
+						</form>
+					</div>
+					@endif
 
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item" href="{{ route('logout') }}"

@@ -5,7 +5,7 @@
 		<div class="row">
 			<div class="col-md-8">
 				<div class="card w-100" style="min-height: 550px;">
-				<img src="{{URL::asset('img_upload/'.$blog->bannerFile)}}" class="card-img-top" alt="...">
+				<img src="{{URL::asset('img_upload/'.$blog->bannerFile)}}" class="card-img-top" alt="..." style="height: 400px;">
 				  <div class="card-body">
 					<h5 class="card-title" style="font-size: 40px;">{{$blog->blogTitle}}</h5>
 					<h6 style="font-size:12px;">14 December, 2018&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:10px;">28 mins ago</span></h6>

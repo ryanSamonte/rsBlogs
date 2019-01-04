@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.homepageMenu')
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-5" style="margin-bottom: 144px;">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+            <div class="card" style="border: 1px #343a40 solid;box-shadow: 1px 1px 15px 1px rgba(0, 0, 0, 0.50);">
+                <div class="card-header" style="background-color: #343a40;color: #fff;">{{ __('Login') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

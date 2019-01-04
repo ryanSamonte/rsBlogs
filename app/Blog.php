@@ -17,4 +17,8 @@ class Blog extends Model
     public function categoryRelation(){
         return $this->belongsTo('App\Category', 'categoryId');
     }
+
+    public function authorRelation(){
+        return $this->belongsTo('App\User', 'authorId');
+    }
 }

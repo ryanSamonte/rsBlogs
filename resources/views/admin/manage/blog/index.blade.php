@@ -56,8 +56,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="blogCategory">Category</label>
-                                        <select name="blogCategory" id="blogCategory" class="form-control">
+                                        <label for="categoryId">Category</label>
+                                        <select name="categoryId" id="categoryId" class="form-control">
                                             @foreach($categoryList as $key => $value)
                                                 <option value="{{ $key }}">{{ $value }}</option>
                                             @endforeach
@@ -80,6 +80,7 @@
                                     <div class="form-group">
                                         <label for="bannerFile">Banner</label>
                                         <input type="file" name="bannerFile" class="form-control" id="bannerFile" required/>
+                                        <p class="small text-muted">*Banner must not be more than 700x400 pixels</p>
                                     </div>
                                 </div>
                             </div>
@@ -103,12 +104,10 @@
             $.ajax({
                 type: "POST",
                 url: "/admin/manage/blog/save",
-                data: {
-                    '_token': $("input[name='_token']", "#newBlogForm").val(),
-                    'blogTitle': $("#blogTitle").val(),
-                    'categoryId': $("#blogCategory").val(),
-                    'blogContent': $("#blogContent").val(),
-                },
+                data:new FormData($("#newBlogForm")[0]),
+                async:false,
+                processData: false,
+                contentType: false,
                 success: function (da) {
                     var table = $("#blogList").DataTable();
                     $("#insertBlogModal .close").click();
@@ -138,7 +137,7 @@
                         data: "category_relation.categoryName"
                     },
                     {
-                        data: "authorId"
+                        data: "author_relation.name"
                     },
                     {
                         data: "id",
