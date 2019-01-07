@@ -47,7 +47,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="blogTitle">Title</label>
-                                        <input type="text" name="blogTitle" class="form-control" id="blogTitle" required/>
+                                        <input type="text" name="blogTitle" class="form-control" id="blogTitle"/>
                                     </div>
                                 </div>
                             </div>
@@ -166,23 +166,27 @@
         });
 
         $(document).on("click", "#insertButton", function(){
-            $.ajax({
-                type: "POST",
-                url: "/admin/manage/blog/save",
-                data:new FormData($("#newBlogForm")[0]),
-                async:false,
-                processData: false,
-                contentType: false,
-                success: function (da) {
-                    var table = $("#blogList").DataTable();
-                    $("#insertBlogModal .close").click();
-                    table.destroy();
-                    getBlogList();
-                },
-                error: function (da) {
-                    alert('Error encountered!');
-                }
-            });
+            if($("#newBlogForm").valid()){
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/manage/blog/save",
+                    data:new FormData($("#newBlogForm")[0]),
+                    async:false,
+                    processData: false,
+                    contentType: false,
+                    success: function (da) {
+                        var table = $("#blogList").DataTable();
+                        $("#insertBlogModal .close").click();
+                        table.destroy();
+                        getBlogList();
+                    },
+                    error: function (da) {
+                        alert('Error encountered!');
+                    }
+                });
+            }
+
+            return false;
         });
 
         $(document).on("click", "#btnEdit", function(){
@@ -211,23 +215,27 @@
         $(document).on("click", "#updateButton", function(){
             var id = $(this).attr("data-edit-id");
 
-            $.ajax({
-                type: "POST",
-                url: "/admin/manage/blog/update?id="+id,
-                data:new FormData($("#editBlogForm")[0]),
-                async:false,
-                processData: false,
-                contentType: false,
-                success: function (da) {
-                    var table = $("#blogList").DataTable();
-                    $("#editBlogInfoModal .close").click();
-                    table.destroy();
-                    getBlogList();
-                },
-                error: function (da) {
-                    alert('Error encountered!');
-                }
-            });
+            if($("#editBlogForm").valid()){
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/manage/blog/update?id="+id,
+                    data:new FormData($("#editBlogForm")[0]),
+                    async:false,
+                    processData: false,
+                    contentType: false,
+                    success: function (da) {
+                        var table = $("#blogList").DataTable();
+                        $("#editBlogInfoModal .close").click();
+                        table.destroy();
+                        getBlogList();
+                    },
+                    error: function (da) {
+                        alert('Error encountered!');
+                    }
+                });
+            }
+
+            return false;
         });
 
         $(document).on("click", "#btnDelete", function(){
@@ -236,9 +244,6 @@
             $.ajax({
                 type: "GET",
                 url: "/admin/manage/blog/delete?id="+id,
-                data:{
-                    deleted_at : "2019-01-07 10:39:57"
-                },
                 success: function (da) {
                     var table = $("#blogList").DataTable();
                     table.destroy();

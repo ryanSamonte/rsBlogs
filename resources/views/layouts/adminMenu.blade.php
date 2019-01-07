@@ -41,6 +41,12 @@
 		padding: 10px;
 		color: white;
 	}	
+
+	.error{
+		color: red;
+		font-family: "Century Gothic";
+    	font-size: 12px;
+	}
 </style>		
 </head>
 <body>
@@ -115,5 +121,7 @@
 		</div>
 	</footer>
 	<script src="{{URL::asset('plugins/bootstrap/js/bootstrap.min.js')}}"></script>
+	<script src="{{URL::asset('plugins/jquery-validation/jquery.validate.js')}}"></script>
+	<script src="{{URL::asset('js/validations.js')}}"></script>
 </body>
 </html>

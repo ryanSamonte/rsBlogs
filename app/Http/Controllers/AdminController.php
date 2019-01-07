@@ -33,7 +33,10 @@ class AdminController extends Controller
 
     public function saveBlogs(Request $request){
         $validatedData = $request->validate([
-            "bannerFile" => "dimensions:max_width=728,max_height=400",
+            "blogTitle" => "required",
+            "categoryId" => "required",
+            "blogContent" => "required",
+            "bannerFile" => "required|dimensions:max_width=728,max_height=400|mimes:jpeg, tif, png, gif, bmp"
         ]); 
 
         $blogInput = $request->all();
@@ -83,13 +86,17 @@ class AdminController extends Controller
     }
 
     public function updateBlog(Request $request){
+        $validatedData = $request->validate([
+            "blogTitle" => "required",
+            "categoryId" => "required",
+            "blogContent" => "required",
+            "bannerFile" => "required|dimensions:max_width=728,max_height=400|mimes:jpeg, tif, png, gif, bmp",
+            "authorId" => "required"
+        ]); 
+
         $blogId = $request['id'];
 
         $blogInfo = Blog::find($blogId);
-
-        $validatedData = $request->validate([
-            "bannerFile" => "dimensions:max_width=728,max_height=400",
-        ]); 
 
         $blogInput = $request->all();
 
@@ -127,18 +134,70 @@ class AdminController extends Controller
     }
 
     public function saveCategory(Request $request){
+        $validatedData = $request->validate([
+            "categoryName" => "required",
+            "categoryDesc" => "required",
+            "authorId" => "required"
+        ]);
+
         $categoryInput = $request->all();
-        $categoryInput['authorId'] = 1;
+        $categoryInput['authorId'] = Auth::user()->id;
 
         Category::create($categoryInput);
 
         return dd($categoryInput);
     }
 
-    public function retrieveCategoryList(){
-        $categoryList = Category::all();
+    public function retrieveCategoryListAll(){
+        $categoryList = Category::where('deleted_at', null)
+        ->get();
 
         return response()->json($categoryList);
+    }
+
+    public function retrieveCategoryListPerAdmin(){
+        $categoryList = Category::where('authorId', Auth::user()->id)
+        ->where('deleted_at', null)
+        ->get();
+
+        return response()->json($categoryList);
+    }
+
+    public function findCategory(Request $request){
+        $categoryId = $request['id'];
+
+        $categoryInfo = Category::find($categoryId);
+
+        return response()->json($categoryInfo);
+    }
+
+    public function updateCategory(Request $request){
+        $validatedData = $request->validate([
+            "categoryName" => "required",
+            "categoryDesc" => "required"
+        ]); 
+
+        $categoryId = $request['id'];
+
+        $categoryInfo = Category::find($categoryId);
+
+        $categoryInput = $request->all();
+
+        $categoryInfo->update($categoryInput);
+    }
+
+    public function softDeleteCategory(Request $request){
+        $categoryId = $request['id'];
+
+        $categoryInfo = Category::find($categoryId);
+        
+        $categoryInput = $request->all();
+
+        $categoryInput['deleted_at'] = now();
+
+        $categoryInfo->update($categoryInput);
+
+        return dd($categoryInput);
     }
 
     //AUTHOR

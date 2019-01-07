@@ -17,9 +17,6 @@
                             <th scope="col">Name</th>
                             <th scope="col">Role</th>
                             <th scope="col">Created</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
                         </tr>
                     </thead>
 
@@ -142,26 +139,6 @@
             },
             {
                 data: "created_at"
-            },
-            {
-                data: "id",
-                render: function (data) {
-
-                    return "<input type='button' class='btn btn-success viewButton' data-id=" + data + " data-toggle='modal' data-target='#viewStudentInfoModal' name='viewButton' id='btnView' value='View' style='width:100%;'/>";
-                }
-            },
-            {
-                data: "id",
-                render: function (data) {
-
-                    return "<input type='button' class='btn btn-warning editButton' data-id=" + data + " data-toggle='modal' data-target='#editStudentInfoModal' name='editButton' id='btnEdit' value='Edit' style='width:100%;'/>";
-                }
-            },
-            {
-                data: "id",
-                render: function (data) {
-                    return "<input type='button' class='btn btn-danger deleteButton' data-id=" + data + " name='deleteButton' id='btnDelete' value='Delete' style='width:100%;'/>";
-                }
             }
         ]
     });

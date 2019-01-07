@@ -10,5 +10,6 @@ class Category extends Model
         'categoryName', 
         'categoryDesc', 
         'authorId',
+        'deleted_at'
     ];
 }

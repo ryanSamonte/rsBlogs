@@ -64,9 +64,29 @@ Route::post('/admin/manage/category/save', [
     'as'=>'admin.manage.category.save'
 ]);
 
-Route::get('/admin/manage/category/retrieveAll', [
-    'uses'=> 'AdminController@retrieveCategoryList',
+Route::get('/admin/manage/category/retrieve/all', [
+    'uses'=> 'AdminController@retrieveCategoryListAll',
+    'as'=>'admin.manage.category.retrieve.all'
+]);
+
+Route::get('/admin/manage/category/retrieve', [
+    'uses'=> 'AdminController@retrieveCategoryListPerAdmin',
     'as'=>'admin.manage.category.retrieve'
+]);
+
+Route::get('/admin/manage/category/edit', [
+    'uses'=> 'AdminController@findCategory',
+    'as'=>'admin.manage.category.edit'
+]);
+
+Route::post('/admin/manage/category/update', [
+    'uses'=> 'AdminController@updateCategory',
+    'as'=>'admin.manage.category.update'
+]);
+
+Route::get('/admin/manage/category/delete', [
+    'uses'=> 'AdminController@softDeleteCategory',
+    'as'=>'admin.manage.category.delete'
 ]);
 
 //AUTHOR
