@@ -16,7 +16,6 @@
                             <th scope="col">#</th>
                             <th scope="col">Title</th>
                             <th scope="col">Category</th>
-                            <th scope="col">Author</th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -95,6 +94,72 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="editBlogInfoModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #343a40;color: #fff;">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Blog</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: #fff;">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin/manage/blog/save" method="post" id="editBlogForm" enctype="multipart/form-data">
+                    {{csrf_field()}}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="blogTitleEdit">Title</label>
+                                        <input type="text" name="blogTitle" class="form-control" id="blogTitleEdit" required/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="categoryIdEdit">Category</label>
+                                        <select name="categoryId" id="categoryIdEdit" class="form-control">
+                                            @foreach($categoryList as $key => $value)
+                                                <option value="{{ $key }}">{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="blogContentEdit">Content</label>
+                                        <textarea name="blogContent" id="blogContentEdit" cols="30" rows="10" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="bannerFileEdit">Banner</label>
+                                        <input type="file" name="bannerFile" class="form-control" id="bannerFileEdit" required/>
+                                        <p class="small text-muted">*Banner must not be more than 700x400 pixels</p>
+                                        <img src="" alt="" id="bannerImage" style="width: 100%; height: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success" id="updateButton" data-edit-id="">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         $(document).ready(function(){
             getBlogList();
@@ -120,10 +185,75 @@
             });
         });
 
+        $(document).on("click", "#btnEdit", function(){
+            var id = $(this).attr("data-id");
+            $("#updateButton").attr("data-edit-id", id);
+
+            $.ajax({
+                type: "GET",
+                url: "/admin/manage/blog/edit?id="+id,
+                success: function (data) {
+                    var jsonStringified = JSON.stringify(data);
+                    var blogDetails = JSON.parse(jsonStringified);
+
+                    $("#blogTitleEdit").val(blogDetails.blogTitle);
+                    $("#categoryIdEdit").val(blogDetails.categoryId);
+                    $("#blogContentEdit").val(blogDetails.blogContent);
+                    
+                    $("#bannerImage").attr("src", window.location.protocol+"//"+window.location.host+"/img_upload/"+blogDetails.bannerFile);
+                },
+                error: function (data) {
+                    alert('Error encountered while retrieving data of: '+id);
+                }
+            });
+        });
+
+        $(document).on("click", "#updateButton", function(){
+            var id = $(this).attr("data-edit-id");
+
+            $.ajax({
+                type: "POST",
+                url: "/admin/manage/blog/update?id="+id,
+                data:new FormData($("#editBlogForm")[0]),
+                async:false,
+                processData: false,
+                contentType: false,
+                success: function (da) {
+                    var table = $("#blogList").DataTable();
+                    $("#editBlogInfoModal .close").click();
+                    table.destroy();
+                    getBlogList();
+                },
+                error: function (da) {
+                    alert('Error encountered!');
+                }
+            });
+        });
+
+        $(document).on("click", "#btnDelete", function(){
+            var id = $(this).attr("data-id");
+
+            $.ajax({
+                type: "GET",
+                url: "/admin/manage/blog/delete?id="+id,
+                data:{
+                    deleted_at : "2019-01-07 10:39:57"
+                },
+                success: function (da) {
+                    var table = $("#blogList").DataTable();
+                    table.destroy();
+                    getBlogList();
+                },
+                error: function (da) {
+                    alert('Error encountered!');
+                }
+            });
+        });
+
         function getBlogList(){
             var table = $("#blogList").DataTable({
                 ajax:{
-                    url: "/admin/manage/blog/retrieveAll",
+                    url: "/admin/manage/blog/retrieve",
                     dataSrc: "",
                 },
                 columns: [
@@ -137,9 +267,6 @@
                         data: "category_relation.categoryName"
                     },
                     {
-                        data: "author_relation.name"
-                    },
-                    {
                         data: "id",
                         render: function (data) {
                             
@@ -150,7 +277,7 @@
                         data: "id",
                         render: function (data) {
 
-                            return "<input type='button' class='btn btn-warning editButton' data-id=" + data + " data-toggle='modal' data-target='#editStudentInfoModal' name='editButton' id='btnEdit' value='Edit' style='width:100%;'/>";
+                            return "<input type='button' class='btn btn-warning editButton' data-id=" + data + " data-toggle='modal' data-target='#editBlogInfoModal' name='editButton' id='btnEdit' value='Edit' style='width:100%;'/>";
                         }
                     },
                     {

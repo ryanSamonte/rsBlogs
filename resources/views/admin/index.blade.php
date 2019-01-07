@@ -59,7 +59,7 @@
         function getBlogList(){
             var table = $("#blogList").DataTable({
                 ajax:{
-                    url: "/admin/manage/blog/retrieveAll",
+                    url: "/admin/manage/blog/retrieve/all",
                     dataSrc: "",
                 },
                 columns: [
@@ -73,7 +73,7 @@
                         data: "category_relation.categoryName"
                     },
                     {
-                        data: "authorId"
+                        data: "author_relation.name"
                     },
                     {
                         data: "id",

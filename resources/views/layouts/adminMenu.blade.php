@@ -97,7 +97,7 @@
 			<div class="row">
 				<div class="col-md-6 text-center mt-5">
 					<h2><a href="/admin">RS Blogs</a></h2>
-					<p class="cdate">&copy; 2018</p>
+					<p class="cdate">&copy; <?php echo date('Y') ?></p>
 				</div>
 				<div class="col-md-6 text-center center-panel">
 					<ul>

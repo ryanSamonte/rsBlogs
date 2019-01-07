@@ -12,6 +12,7 @@ class Blog extends Model
         'blogContent',
         'authorId',
         'bannerFile',
+        'deleted_at',
     ];
 
     public function categoryRelation(){

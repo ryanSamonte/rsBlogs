@@ -28,9 +28,29 @@ Route::post('/admin/manage/blog/save', [
     'as'=>'admin.manage.blog.save'
 ]);
 
-Route::get('/admin/manage/blog/retrieveAll', [
-    'uses'=> 'AdminController@retrieveBlogList',
+Route::get('/admin/manage/blog/retrieve/all', [
+    'uses'=> 'AdminController@retrieveBlogListAll',
+    'as'=>'admin.manage.blog.retrieve.all'
+]);
+
+Route::get('/admin/manage/blog/retrieve', [
+    'uses'=> 'AdminController@retrieveBlogListPerAdmin',
     'as'=>'admin.manage.blog.retrieve'
+]);
+
+Route::get('/admin/manage/blog/edit', [
+    'uses'=> 'AdminController@findBlog',
+    'as'=>'admin.manage.blog.edit'
+]);
+
+Route::post('/admin/manage/blog/update', [
+    'uses'=> 'AdminController@updateBlog',
+    'as'=>'admin.manage.blog.update'
+]);
+
+Route::get('/admin/manage/blog/delete', [
+    'uses'=> 'AdminController@softDeleteBlog',
+    'as'=>'admin.manage.blog.delete'
 ]);
 
 //CATEGORY

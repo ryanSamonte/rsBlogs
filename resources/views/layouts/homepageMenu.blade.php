@@ -70,11 +70,6 @@
 				<li class="nav-item">
 					<a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
 				</li>
-				@if (Route::has('register'))
-					<li class="nav-item">
-						<a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-					</li>
-				@endif
 			@else
 				<li class="nav-item dropdown">
 					<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -119,7 +114,7 @@
 			<div class="row">
 				<div class="col-md-6 text-center mt-5">
 					<h2>RS Blogs</h2>
-					<p class="cdate">&copy; 2018</p>
+					<p class="cdate">&copy; <?php echo date('Y') ?></p>
 				</div>
 				<div class="col-md-6 text-center center-panel">
 					<ul>

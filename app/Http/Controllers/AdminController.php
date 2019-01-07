@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\Input;
 class AdminController extends Controller
 {
     public function index(){
-        $blogCount = Blog::all()->count();
+        $blogCount = Blog::where('authorId', Auth::user()->id)
+                    ->where('deleted_at', null)
+                    ->count();
         
-        $categoryCount = Category::all()->count();
+        $categoryCount = Category::where('authorId', Auth::user()->id)
+                    ->count();
 
         $authorCount = User::all()->count();
 
@@ -52,10 +55,69 @@ class AdminController extends Controller
         }
     }
 
-    public function retrieveBlogList(){
-        $blogList = Blog::with('categoryRelation')->with('authorRelation')->get();
+    public function retrieveBlogListAll(){
+        $blogList = Blog::where('deleted_at', null)
+        ->with('categoryRelation')
+        ->with('authorRelation')
+        ->get();
 
         return response()->json($blogList);
+    }
+
+    public function retrieveBlogListPerAdmin(){
+        $blogList = Blog::where('authorId', Auth::user()->id)
+        ->where('deleted_at', null)
+        ->with('categoryRelation')
+        ->with('authorRelation')
+        ->get();
+
+        return response()->json($blogList);
+    }
+
+    public function findBlog(Request $request){
+        $blogId = $request['id'];
+
+        $blogInfo = Blog::find($blogId);
+
+        return response()->json($blogInfo);
+    }
+
+    public function updateBlog(Request $request){
+        $blogId = $request['id'];
+
+        $blogInfo = Blog::find($blogId);
+
+        $validatedData = $request->validate([
+            "bannerFile" => "dimensions:max_width=728,max_height=400",
+        ]); 
+
+        $blogInput = $request->all();
+
+        if(Input::hasFile('bannerFile')){
+            $image = Input::file('bannerFile');
+            $blogInput['bannerFile'] = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('img_upload');
+            $image->move($destinationPath, $blogInput['bannerFile']);
+        
+            $blogInfo->update($blogInput);
+        }
+        else{
+            $blogInfo->update($blogInput);
+        }
+    }
+
+    public function softDeleteBlog(Request $request){
+        $blogId = $request['id'];
+
+        $blogInfo = Blog::find($blogId);
+        
+        $blogInput = $request->all();
+
+        $blogInput['deleted_at'] = now();
+
+        $blogInfo->update($blogInput);
+
+        return dd($blogInput);
     }
 
 
