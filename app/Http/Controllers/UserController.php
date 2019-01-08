@@ -9,14 +9,17 @@ use App\Blog;
 class UserController extends Controller
 {
     public function index(){
-        $otherBlogs = DB::table('blogs')
+        $otherBlogs = Blog::with('authorRelation')
+        ->where('deleted_at', null)
         ->orderByDesc('created_at')
         ->limit(4)
         ->get();
 
         $blogsCount = DB::table('blogs')
+        ->where('deleted_at', null)
         ->count();
 
+        //return dd($otherBlogs);
         return view("welcome", compact("otherBlogs", "blogsCount"));
     }
 
