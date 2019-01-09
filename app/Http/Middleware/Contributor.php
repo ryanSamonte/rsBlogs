@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class Admin
+class Contributor
 {
     /**
      * Handle an incoming request.
@@ -15,8 +15,8 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()->role_id != 1){
-            return redirect()->back()->with('error','You have not admin access');
+        if(auth()->user()->role_id != 2){
+            return redirect('/')->with('error','You have not contributor access');
         }
         return $next($request);
     }

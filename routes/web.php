@@ -10,6 +10,11 @@ Route::get('/view/blog', [
     'as'=>'user.view.blog'
 ]);
 
+Route::get('/view/blog/all', [
+    'uses'=> 'UserController@viewBlogAll',
+    'as'=>'user.view.blog.all'
+]);
+
 Auth::routes();
 
 Route::group(['middleware' => ['auth', 'admin']], function(){
@@ -105,5 +110,49 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('/admin/manage/author/retrieveAll', [
         'uses'=> 'AdminController@retrieveAuthorList',
         'as'=>'admin.manage.author.retrieve'
+    ]);
+});
+
+Route::group(['middleware' => ['auth', 'contributor']], function(){
+    //CONTRIBUTOR
+    Route::get('/contributor', [
+        'uses'=>'ContributorController@index',
+        'as'=>'contributor.index',
+    ]);
+
+    //BLOGS
+    Route::get('/contributor/manage/blog', [
+        'uses'=>'ContributorController@manageBlogs',
+        'as'=>'contributor.manage.blog'
+    ]);
+
+    Route::post('/contributor/manage/blog/save', [
+        'uses'=> 'ContributorController@saveBlogs',
+        'as'=>'contributor.manage.blog.save'
+    ]);
+
+    Route::get('/contributor/manage/blog/retrieve/all', [
+        'uses'=> 'ContributorController@retrieveBlogListAll',
+        'as'=>'contributor.manage.blog.retrieve.all'
+    ]);
+
+    Route::get('/contributor/manage/blog/retrieve', [
+        'uses'=> 'ContributorController@retrieveBlogListPerAdmin',
+        'as'=>'contributor.manage.blog.retrieve'
+    ]);
+
+    Route::get('/contributor/manage/blog/edit', [
+        'uses'=> 'ContributorController@findBlog',
+        'as'=>'contributor.manage.blog.edit'
+    ]);
+
+    Route::post('/contributor/manage/blog/update', [
+        'uses'=> 'ContributorController@updateBlog',
+        'as'=>'contributor.manage.blog.update'
+    ]);
+
+    Route::get('/contributor/manage/blog/delete', [
+        'uses'=> 'ContributorController@softDeleteBlog',
+        'as'=>'contributor.manage.blog.delete'
     ]);
 });

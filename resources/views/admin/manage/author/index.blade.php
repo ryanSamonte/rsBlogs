@@ -138,7 +138,13 @@
                 }
             },
             {
-                data: "created_at"
+                data: "created_at",
+                render: function(data){
+                    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                    var today = new Date(Date.parse(data));
+
+                    return today.toLocaleDateString("en-US", options);
+                }
             }
         ]
     });

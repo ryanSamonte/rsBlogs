@@ -33,4 +33,16 @@ class UserController extends Controller
 
         return view("viewBlog", compact("blog", "otherBlogs"));
     }
+
+    public function viewBlogAll(){
+        $blogs = Blog::with('authorRelation')
+        ->where('deleted_at', null)
+        ->orderByDesc('created_at')
+        ->paginate(5);
+
+        return view('all', ['blogs' => $blogs]);
+
+        //return dd($otherBlogs);
+        //return view("all", compact("blogs"));
+    }
 }

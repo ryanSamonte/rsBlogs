@@ -51,27 +51,19 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="/admin">RS Blogs</a>
+		<a class="navbar-brand" href="/contributor">RS Blogs</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li {{{ (Request::is("admin") ? "class=active" : "") }}}>
-				<a class="nav-link" href="{{route('admin.index')}}">Home <span class="sr-only">(current)</span></a>
+			<li {{{ (Request::is("contributor") ? "class=active" : "") }}}>
+				<a class="nav-link" href="{{route('contributor.index')}}">Home <span class="sr-only">(current)</span></a>
 			</li>
 
-			<li {{{ (Request::is("admin/manage/blog") ? "class=active" : "") }}}>
-				<a class="nav-link" href="{{route('admin.manage.blog')}}">Manage Blog</a>
-			</li>
-
-			<li {{{ (Request::is("admin/manage/category") ? "class=active" : "") }}}>
-				<a class="nav-link" href="{{route('admin.manage.category')}}">Manage Category</a>
-			</li>
-
-			<li {{{ (Request::is("admin/manage/author") ? "class=active" : "") }}}>
-				<a class="nav-link" href="{{route('admin.manage.author')}}">Manage Author</a>
+			<li {{{ (Request::is("contributor/manage/blog") ? "class=active" : "") }}}>
+				<a class="nav-link" href="{{route('contributor.manage.blog')}}">Manage Blog</a>
 			</li>
 		</ul>
 		<ul class="navbar-nav ml-auto">
@@ -102,19 +94,12 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6 text-center mt-5">
-					<h2><a href="/admin">RS Blogs</a></h2>
+					<h2><a href="/contributor">RS Blogs</a></h2>
 					<p class="cdate">&copy; <?php echo date('Y') ?></p>
 				</div>
 				<div class="col-md-6 text-center center-panel">
 					<ul>
-						<li><a href="{{route('admin.manage.blog')}}">Manage Blog</a></li>
-					</ul>
-					<ul>
-						<li><a href="{{route('admin.manage.category')}}">Manage Category</a></li>
-					</ul>
-
-					<ul>
-						<li><a href="">Manage Author</a></li>
+						<li><a href="{{route('contributor.manage.blog')}}">Manage Blog</a></li>
 					</ul>
 				</div>
 			</div>

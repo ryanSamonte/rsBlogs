@@ -9,7 +9,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
-class AdminController extends Controller
+class ContributorController extends Controller
 {
     public function index(){
         $blogCount = Blog::where('authorId', Auth::user()->id)
@@ -22,22 +22,22 @@ class AdminController extends Controller
 
         $authorCount = User::where('email', '!=', 'superadmin@gmail.com')->count();
 
-        return view('admin.index', compact("blogCount", "categoryCount", "authorCount"));
+        return view('contributor.index', compact("blogCount", "categoryCount", "authorCount"));
     }
 
     //BLOGS
     public function manageBlogs(){
         $categoryList = Category::where('deleted_at', null)->pluck('categoryName', 'id')->toArray();
 
-        return view('admin.manage.blog.index', compact('categoryList'));
+        return view('contributor.manage.blog.index', compact('categoryList'));
     }
 
     public function saveBlogs(Request $request){
         $validatedData = $request->validate([
             "blogTitle" => "required",
             "categoryId" => "required",
-            "blogContent" => "required",
-            "bannerFile" => "required|dimensions:max_width=728,max_height=400|mimes:jpeg, tif, png, gif, bmp"
+            "blogContent" => "required"
+            //"bannerFile" => "required|dimensions:max_width=728,max_height=400|mimes:jpeg, .jpg, .JPG, tif, png, gif, bmp"
         ]); 
 
         $blogInput = $request->all();
@@ -131,7 +131,7 @@ class AdminController extends Controller
 
     //CATEGORY
     public function manageCategory(){
-        return view('admin.manage.category.index');
+        return view('contributor.manage.category.index');
     }
 
     public function saveCategory(Request $request){
@@ -198,26 +198,5 @@ class AdminController extends Controller
         $categoryInfo->update($categoryInput);
 
         return dd($categoryInput);
-    }
-
-    //AUTHOR
-    public function manageAuthor(){
-        return view('admin.manage.author.index');
-    }
-
-    public function saveAuthor(Request $request){
-        $authorInput = $request->all();
-        $authorInput['password'] = bcrypt($request['password']);
-
-        User::create($authorInput);
-
-        return dd($authorInput);
-    }
-
-    public function retrieveAuthorList(){
-        $authorList = User::where('email', '!=', 'superadmin@gmail.com')
-                            ->get();
-
-        return response()->json($authorList);
     }
 }

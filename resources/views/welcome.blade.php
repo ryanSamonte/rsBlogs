@@ -4,7 +4,8 @@
 	<div class="container-fluid" style="padding-left: 0px; padding-right: 0px;">
 		<div class="row">
 			<div class="col">
-				<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel">
+			@if($blogsCount >= 1)
+			<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel">
 				  	<ol class="carousel-indicators">
 						<?php $counter = 0; ?>
 							@foreach($otherBlogs as $otherBlogsValue)
@@ -55,7 +56,7 @@
 									<span class="sr-only">Next</span>
 							</a>
 				</div>				
-			
+			@endif
 			</div>
 		</div>
 	</div>
@@ -64,7 +65,7 @@
 	@if($blogsCount == 0)
 	<div class="row">
 		<div class="col text-center">
-			<h1>No posts yet.</h1>
+			<h1>No post yet.</h1>
 		</div>
 	</div>
 	@endif

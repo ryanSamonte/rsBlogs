@@ -66,11 +66,11 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active">
-				<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+			<li {{{ (Request::is("/") ? "class=active" : "") }}}>
+				<a class="nav-link" href="{{route('home')}}">Home <span class="sr-only">(current)</span></a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">View All</a>
+			<li {{{ (Request::is("view/blog/all") ? "class=active" : "") }}}>
+				<a class="nav-link" href="{{route('user.view.blog.all')}}">View All</a>
 			</li>
 		</ul>
 		<!-- <form class="form-inline my-2 my-lg-0">
@@ -90,12 +90,13 @@
 					</a>
 					@if(Auth::user()->role_id == 1)
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="{{ route('admin.index') }}">Go to dashboard</a>
+						
 						<a class="dropdown-item" href="{{ route('logout') }}"
 							onclick="event.preventDefault();
 											document.getElementById('logout-form').submit();">
 							{{ __('Logout') }}
 						</a>
-						<a class="dropdown-item" href="{{ route('admin.index') }}">Go to dashboard</a>
 
 						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 							@csrf
@@ -103,7 +104,10 @@
 					</div>
 					@endif
 
+					@if(Auth::user()->role_id == 2)
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="{{ route('contributor.index') }}">Go to dashboard</a>
+
 						<a class="dropdown-item" href="{{ route('logout') }}"
 							onclick="event.preventDefault();
 											document.getElementById('logout-form').submit();">
@@ -114,6 +118,7 @@
 							@csrf
 						</form>
 					</div>
+					@endif
 				</li>
 			@endguest
 		</ul>
