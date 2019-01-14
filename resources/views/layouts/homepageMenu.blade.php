@@ -54,6 +54,21 @@
     width: 100%;
 }
 
+	.pagination{
+		justify-content: center!important;
+	}
+
+	.page-link{
+		color: #343a40;
+	}
+
+	.page-item.active .page-link {
+		z-index: 1;
+		color: #fff;
+		background-color: #343a40;
+		border-color: #343a40;
+	}
+
 	
 </style>
 </head>

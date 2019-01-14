@@ -37,7 +37,7 @@ class AdminController extends Controller
             "blogTitle" => "required",
             "categoryId" => "required",
             "blogContent" => "required",
-            "bannerFile" => "required|dimensions:max_width=728,max_height=400|mimes:jpeg, tif, png, gif, bmp"
+            "bannerFile" => "required|image"
         ]); 
 
         $blogInput = $request->all();
@@ -50,13 +50,15 @@ class AdminController extends Controller
             
             $blogInput['authorId'] = Auth::user()->id;
         
-            Blog::create($blogInput);
+            // Blog::create($blogInput);
         }
         else{
             $blogInput['authorId'] = Auth::user()->id;
         
-            Blog::create($blogInput);
+            // Blog::create($blogInput);
         }
+
+        return dd($blogInput);
     }
 
     public function retrieveBlogListAll(){
@@ -90,9 +92,7 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             "blogTitle" => "required",
             "categoryId" => "required",
-            "blogContent" => "required",
-            "bannerFile" => "required|dimensions:max_width=728,max_height=400|mimes:jpeg, tif, png, gif, bmp",
-            "authorId" => "required"
+            "blogContent" => "required"
         ]); 
 
         $blogId = $request['id'];
@@ -100,7 +100,31 @@ class AdminController extends Controller
         $blogInfo = Blog::find($blogId);
 
         $blogInput = $request->all();
+        
+        if(Input::hasFile('bannerFile')){
+            $image = Input::file('bannerFile');
+            $blogInput['bannerFile'] = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('img_upload');
+            $image->move($destinationPath, $blogInput['bannerFile']);
+        
+            $blogInfo->update($blogInput);
+        }
+        else{
+            $blogInfo->update($blogInput);
+        }
+    }
 
+    public function updateBlogBanner(Request $request){
+        $validatedData = $request->validate([
+            "bannerFile" => "required|image"
+        ]); 
+
+        $blogId = $request['id'];
+
+        $blogInfo = Blog::find($blogId);
+
+        $blogInput = $request->all();
+        
         if(Input::hasFile('bannerFile')){
             $image = Input::file('bannerFile');
             $blogInput['bannerFile'] = time().'.'.$image->getClientOriginalExtension();

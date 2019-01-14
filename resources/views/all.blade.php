@@ -29,8 +29,8 @@
                         @endforeach
                         </div>
 				  </div>
-                  <div class="card-footer">
-                    {{ $blogs->links() }}
+                  <div class="card-footer text-center">
+                    <p>{{ $blogs->links() }}</p>
                   </div>
 				</div>
             </div>

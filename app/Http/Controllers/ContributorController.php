@@ -36,8 +36,8 @@ class ContributorController extends Controller
         $validatedData = $request->validate([
             "blogTitle" => "required",
             "categoryId" => "required",
-            "blogContent" => "required"
-            //"bannerFile" => "required|dimensions:max_width=728,max_height=400|mimes:jpeg, .jpg, .JPG, tif, png, gif, bmp"
+            "blogContent" => "required",
+            "bannerFile" => "required|image"
         ]); 
 
         $blogInput = $request->all();
@@ -90,9 +90,7 @@ class ContributorController extends Controller
         $validatedData = $request->validate([
             "blogTitle" => "required",
             "categoryId" => "required",
-            "blogContent" => "required",
-            "bannerFile" => "required|dimensions:max_width=728,max_height=400|mimes:jpeg, tif, png, gif, bmp",
-            "authorId" => "required"
+            "blogContent" => "required"
         ]); 
 
         $blogId = $request['id'];
@@ -100,7 +98,31 @@ class ContributorController extends Controller
         $blogInfo = Blog::find($blogId);
 
         $blogInput = $request->all();
+        
+        if(Input::hasFile('bannerFile')){
+            $image = Input::file('bannerFile');
+            $blogInput['bannerFile'] = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('img_upload');
+            $image->move($destinationPath, $blogInput['bannerFile']);
+        
+            $blogInfo->update($blogInput);
+        }
+        else{
+            $blogInfo->update($blogInput);
+        }
+    }
 
+    public function updateBlogBanner(Request $request){
+        $validatedData = $request->validate([
+            "bannerFile" => "required|image"
+        ]); 
+
+        $blogId = $request['id'];
+
+        $blogInfo = Blog::find($blogId);
+
+        $blogInput = $request->all();
+        
         if(Input::hasFile('bannerFile')){
             $image = Input::file('bannerFile');
             $blogInput['bannerFile'] = time().'.'.$image->getClientOriginalExtension();

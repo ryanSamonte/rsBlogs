@@ -55,6 +55,11 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
         'as'=>'admin.manage.blog.update'
     ]);
 
+    Route::post('/admin/manage/blog/update/banner', [
+        'uses'=> 'AdminController@updateBlogBanner',
+        'as'=>'admin.manage.blog.update.banner'
+    ]);
+
     Route::get('/admin/manage/blog/delete', [
         'uses'=> 'AdminController@softDeleteBlog',
         'as'=>'admin.manage.blog.delete'
@@ -149,6 +154,11 @@ Route::group(['middleware' => ['auth', 'contributor']], function(){
     Route::post('/contributor/manage/blog/update', [
         'uses'=> 'ContributorController@updateBlog',
         'as'=>'contributor.manage.blog.update'
+    ]);
+
+    Route::post('/contributor/manage/blog/update/banner', [
+        'uses'=> 'ContributorController@updateBlogBanner',
+        'as'=>'contributor.manage.blog.update.banner'
     ]);
 
     Route::get('/contributor/manage/blog/delete', [

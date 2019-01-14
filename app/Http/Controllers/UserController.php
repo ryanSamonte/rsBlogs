@@ -41,8 +41,5 @@ class UserController extends Controller
         ->paginate(5);
 
         return view('all', ['blogs' => $blogs]);
-
-        //return dd($otherBlogs);
-        //return view("all", compact("blogs"));
     }
 }

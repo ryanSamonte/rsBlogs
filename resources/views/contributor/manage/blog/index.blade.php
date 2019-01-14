@@ -19,6 +19,7 @@
                             <th></th>
                             <th></th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -79,7 +80,6 @@
                                     <div class="form-group">
                                         <label for="bannerFile">Banner</label>
                                         <input type="file" name="bannerFile" class="form-control" id="bannerFile" required/>
-                                        <p class="small text-muted">*Banner must not be more than 700x400 pixels</p>
                                     </div>
                                 </div>
                             </div>
@@ -138,13 +138,35 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success" id="updateButton" data-edit-id="">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="modal fade" id="editBlogBannerModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #343a40;color: #fff;">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Blog Banner</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: #fff;">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin/manage/blog/save" method="post" id="editBlogBannerForm" enctype="multipart/form-data">
+                    {{csrf_field()}}
+                        <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="bannerFileEdit">Banner</label>
-                                        <input type="file" name="bannerFile" class="form-control" id="bannerFileEdit" required/>
-                                        <p class="small text-muted">*Banner must not be more than 700x400 pixels</p>
+                                        <input type="file" name="bannerFile" class="form-control mb-3" id="bannerFileEdit" required/>
                                         <img src="" alt="" id="bannerImage" style="width: 100%; height: 200px;">
                                     </div>
                                 </div>
@@ -154,7 +176,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button class="btn btn-success" id="updateButton" data-edit-id="">Save Changes</button>
+                    <button class="btn btn-success" id="updateBannerButton" data-edit-id="">Save Changes</button>
                 </div>
             </div>
         </div>
@@ -204,7 +226,6 @@
                     $("#categoryIdEdit").val(blogDetails.categoryId);
                     $("#blogContentEdit").val(blogDetails.blogContent);
                     
-                    $("#bannerImage").attr("src", window.location.protocol+"//"+window.location.host+"/img_upload/"+blogDetails.bannerFile);
                 },
                 error: function (data) {
                     alert('Error encountered while retrieving data of: '+id);
@@ -226,6 +247,51 @@
                     success: function (da) {
                         var table = $("#blogList").DataTable();
                         $("#editBlogInfoModal .close").click();
+                        table.destroy();
+                        getBlogList();
+                    },
+                    error: function (da) {
+                        alert('Error encountered!');
+                    }
+                });
+            }
+
+            return false;
+        });
+
+        $(document).on("click", "#btnEditBanner", function(){
+            var id = $(this).attr("data-id");
+            $("#updateBannerButton").attr("data-edit-id", id);
+
+            $.ajax({
+                type: "GET",
+                url: "/contributor/manage/blog/edit?id="+id,
+                success: function (data) {
+                    var jsonStringified = JSON.stringify(data);
+                    var blogDetails = JSON.parse(jsonStringified);
+
+                    $("#bannerImage").attr("src", window.location.protocol+"//"+window.location.host+"/img_upload/"+blogDetails.bannerFile);
+                },
+                error: function (data) {
+                    alert('Error encountered while retrieving data of: '+id);
+                }
+            });
+        });
+
+        $(document).on("click", "#updateBannerButton", function(){
+            var id = $(this).attr("data-edit-id");
+
+            if($("#editBlogBannerForm").valid()){
+                $.ajax({
+                    type: "POST",
+                    url: "/contributor/manage/blog/update/banner?id="+id,
+                    data:new FormData($("#editBlogBannerForm")[0]),
+                    async:false,
+                    processData: false,
+                    contentType: false,
+                    success: function (da) {
+                        var table = $("#blogList").DataTable();
+                        $("#editBlogBannerModal .close").click();
                         table.destroy();
                         getBlogList();
                     },
@@ -282,7 +348,14 @@
                         data: "id",
                         render: function (data) {
 
-                            return "<input type='button' class='btn btn-warning editButton' data-id=" + data + " data-toggle='modal' data-target='#editBlogInfoModal' name='editButton' id='btnEdit' value='Edit' style='width:100%;'/>";
+                            return "<input type='button' class='btn btn-warning editButton' data-id=" + data + " data-toggle='modal' data-target='#editBlogInfoModal' name='editButton' id='btnEdit' value='Edit Content' style='width:100%;'/>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+
+                            return "<input type='button' class='btn btn-info editBanner' data-id=" + data + " data-toggle='modal' data-target='#editBlogBannerModal' name='editBanner' id='btnEditBanner' value='Edit Banner' style='width:100%;'/>";
                         }
                     },
                     {
