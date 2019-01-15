@@ -118,24 +118,28 @@
     });
 
     $(document).on("click", "#insertButton", function(){
-        $.ajax({
-            type: "POST",
-            url: "/admin/manage/category/save",
-            data:{
-                '_token': $("input[name='_token']", "#newCategoryForm").val(),
-                'categoryName': $("#categoryName").val(),
-                'categoryDesc': $("#categoryDesc").val()
-            },
-            success: function (da) {
-                var table = $("#categoryList").DataTable();
-                $("#insertCategoryModal .close").click();
-                table.destroy();
-                getCategoryList();
-            },
-            error: function (da) {
-                alert('Error encountered!');
-            }
-        });
+        if($("#newCategoryForm").valid()){
+                $.ajax({
+                type: "POST",
+                url: "/admin/manage/category/save",
+                data:{
+                    '_token': $("input[name='_token']", "#newCategoryForm").val(),
+                    'categoryName': $("#categoryName").val(),
+                    'categoryDesc': $("#categoryDesc").val()
+                },
+                success: function (da) {
+                    var table = $("#categoryList").DataTable();
+                    $("#insertCategoryModal .close").click();
+                    table.destroy();
+                    getCategoryList();
+                },
+                error: function (da) {
+                    alert('Error encountered!');
+                }
+            });
+        }
+
+        return false;
     });
 
     $(document).on("click", "#btnEdit", function(){
@@ -162,7 +166,7 @@
     $(document).on("click", "#updateButton", function(){
         var id = $(this).attr("data-edit-id");
 
-        //if($("#editCategoryForm").valid()){
+        if($("#editCategoryForm").valid()){
             $.ajax({
                 type: "POST",
                 url: "/admin/manage/category/update?id="+id,
@@ -180,9 +184,9 @@
                     alert('Error encountered!');
                 }
             });
-        //}
+        }
 
-        //return false;
+        return false;
     });
 
     $(document).on("click", "#btnDelete", function(){

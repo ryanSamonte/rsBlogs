@@ -96,26 +96,30 @@
     });
 
     $(document).on("click", "#insertButton", function(){
-        $.ajax({
-            type: "POST",
-            url: "/admin/manage/author/save",
-            data:{
-                '_token': $("input[name='_token']", "#newAuthorForm").val(),
-                'name': $("#authorName").val(),
-                'email': $("#authorEmail").val(),
-                'password': $("#authorPassword").val(),
-                'role_id': $("#authorRole").val()
-            },
-            success: function (da) {
-                var table = $("#authorList").DataTable();
-                $("#insertAuthorModal .close").click();
-                table.destroy();
-                getAuthorList();
-            },
-            error: function (da) {
-                alert('Error encountered!');
-            }
-        });
+        if($("#newAuthorForm").valid()){
+            $.ajax({
+                type: "POST",
+                url: "/admin/manage/author/save",
+                data:{
+                    '_token': $("input[name='_token']", "#newAuthorForm").val(),
+                    'name': $("#authorName").val(),
+                    'email': $("#authorEmail").val(),
+                    'password': $("#authorPassword").val(),
+                    'role_id': $("#authorRole").val()
+                },
+                success: function (da) {
+                    var table = $("#authorList").DataTable();
+                    $("#insertAuthorModal .close").click();
+                    table.destroy();
+                    getAuthorList();
+                },
+                error: function (da) {
+                    alert('Error encountered!');
+                }
+            });
+        }
+
+        return false;
     });
 
     function getAuthorList(){
